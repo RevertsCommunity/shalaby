@@ -7,7 +7,7 @@ services:
       POSTGRES_DB: craig
       POSTGRES_USER: craig
     ports:
-      - "5432:5432"
+      - "5423:5432"
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U craig"]
       interval: 5s
@@ -37,4 +37,5 @@ services:
 
 volumes:
   db_data:
+
   craig_rec:
