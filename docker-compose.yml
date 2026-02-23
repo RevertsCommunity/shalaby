@@ -21,7 +21,20 @@ services:
     ports:
       - "6379:6379"
   craig:
-    build: .
+    build:
+      context: .
+      args:
+        # This tells Compose to grab the Dokploy variables and pass them to the build
+        - NODE_VERSION=${NODE_VERSION}
+        - DISCORD_BOT_TOKEN=${DISCORD_BOT_TOKEN}
+        - DISCORD_APP_ID=${DISCORD_APP_ID}
+        - API_HOMEPAGE=${API_HOMEPAGE}
+        - DATABASE_NAME=${DATABASE_NAME}
+        - POSTGRESQL_USER=${POSTGRESQL_USER}
+        - POSTGRESQL_PASSWORD=${POSTGRESQL_PASSWORD}
+        # You can also set default fallbacks here just in case
+        - REDIS_START_TIMEOUT_S=${REDIS_START_TIMEOUT_S:-30}
+        - POSTGRESQL_START_TIMEOUT_S=${POSTGRESQL_START_TIMEOUT_S:-30}
     ports:
       - "7777:3000"
       - "5029:5029"
@@ -38,5 +51,6 @@ volumes:
   db_data:
 
   craig_rec:
+
 
 
