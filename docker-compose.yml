@@ -23,7 +23,7 @@ services:
   craig:
     build: .
     ports:
-      - "3000:3000"
+      - "7777:3000"
       - "5029:5029"
     depends_on:
       db:
@@ -38,4 +38,5 @@ volumes:
   db_data:
 
   craig_rec:
+
 
