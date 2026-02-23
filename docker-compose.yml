@@ -1,5 +1,5 @@
 services:
-  db:
+  craigdb:
     image: postgres:15-alpine
     restart: always
     environment:
@@ -39,7 +39,7 @@ services:
       - "7777:3000"
       - "5029:5029"
     depends_on:
-      db:
+      craigdb:
         condition: service_healthy
         restart: true
       redis:
@@ -51,6 +51,7 @@ volumes:
   db_data:
 
   craig_rec:
+
 
 
 
