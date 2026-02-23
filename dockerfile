@@ -53,13 +53,17 @@ ENV POSTGRESQL_PASSWORD=$POSTGRESQL_PASSWORD
 ENV REDIS_START_TIMEOUT_S=$REDIS_START_TIMEOUT_S
 ENV POSTGRESQL_START_TIMEOUT_S=$POSTGRESQL_START_TIMEOUT_S
 
-# Run first-time setup for faster restarts
+# Ensure the scripts have execution permissions
+RUN chmod +x ./install.sh
+RUN chmod +x ./start.sh
+
+# Run first-time setup for faster restarts (Build Phase)
 RUN ./install.sh
 
 # Expose app port
 EXPOSE 7777
 # Expose API port
 EXPOSE 5029
-# Start Craig
-CMD ["sh", "-c", "/app/install.sh && sleep infinity"]
 
+# Start Craig using the runtime script (Runtime Phase)
+CMD ["/app/start.sh"]

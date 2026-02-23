@@ -104,7 +104,7 @@ install_apt_packages() {
 
 install_node() {
   curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash
-  
+
   source ~/.nvm/nvm.sh || true
 
   nvm install $NODE_VERSION
@@ -127,23 +127,23 @@ start_redis() {
   then
     if [[ $init_system == "systemd" ]]
     then
-      sudo systemctl enable --now redis-server 
+      sudo systemctl enable --now redis-server
     else
-      redis-server --daemonize yes 
+      redis-server --daemonize yes
     fi
     start_time_s=$(date +%s)
 
     while ! redis-cli ping | grep -q "PONG"
     do
       current_time_s=$(date +%s)
-      sleep 1 
+      sleep 1
 
       if [[ $current_time_s-$start_time_s -ge $REDIS_START_TIMEOUT_S ]]
       then
         error "Redis server is not running or not accepting connections"
         exit 1
       fi
-    done 
+    done
   fi
 }
 
@@ -159,7 +159,7 @@ start_postgresql() {
     then
       sudo systemctl enable --now postgresql
     else
-      sudo /etc/init.d/postgresql start 
+      sudo /etc/init.d/postgresql start
     fi
 
     start_time_s=$(date +%s)
@@ -167,14 +167,14 @@ start_postgresql() {
     while ! pg_isready
     do
       current_time_s=$(date +%s)
-      sleep 1 
+      sleep 1
 
       if [[ $current_time_s-$start_time_s -ge $POSTGRESQL_START_TIMEOUT_S ]]
       then
         error "PostgreSQL server is not running or not accepting connections"
         exit 1
       fi
-    done 
+    done
   fi
 
   if sudo -u postgres -i psql -lqt | cut -d \| -f 1 | grep -qw "$DATABASE_NAME"
@@ -182,7 +182,7 @@ start_postgresql() {
     info "PostgreSQL database '$DATABASE_NAME' already exists."
   else
     sudo -u postgres -i createdb $DATABASE_NAME
-  fi 
+  fi
 
   if ! sudo -u postgres -i psql -t -c '\du' | cut -d \| -f 1 | grep -qw "$POSTGRESQL_USER"
   then
@@ -195,15 +195,15 @@ start_postgresql() {
   sudo -u postgres -i psql -c "GRANT ALL ON SCHEMA public TO $POSTGRESQL_USER;"
   sudo -u postgres -i psql -c "GRANT USAGE ON SCHEMA public TO $POSTGRESQL_USER;"
   sudo -u postgres -i psql -c "ALTER DATABASE $DATABASE_NAME OWNER TO $POSTGRESQL_USER;"
-  
-  sudo -u postgres -i psql -c "\l" 
+
+  sudo -u postgres -i psql -c "\l"
 }
 
 config_react(){
   info "Configuring react..."
 
-  cp "$craig_dir/apps/bot/config/_default.js" "$craig_dir/apps/bot/config/default.js" 
-  cp "$craig_dir/apps/tasks/config/_default.js" "$craig_dir/apps/tasks/config/default.js" 
+  cp "$craig_dir/apps/bot/config/_default.js" "$craig_dir/apps/bot/config/default.js"
+  cp "$craig_dir/apps/tasks/config/_default.js" "$craig_dir/apps/tasks/config/default.js"
 
   # Extract protocol and domain from API_HOMEPAGE
   DOWNLOAD_PROTOCOL=$(echo "$API_HOMEPAGE" | awk -F '://' '{print $1}')
@@ -224,9 +224,9 @@ config_yarn(){
 
   yarn install
   yarn prisma:generate
-  yarn prisma:deploy
+  # yarn prisma:deploy
   yarn run build
-  yarn run sync
+  # yarn run sync
 }
 
 start_app(){
@@ -256,7 +256,7 @@ config_cook(){
 # Main script commands
 ###################################################
 
-{ 
+{
   while [[ $# -gt 0 ]]
   do
     case "$1" in
@@ -284,7 +284,7 @@ config_cook(){
 
   if ! sudo -v; then
     error "Sudo password entry was cancelled or incorrect."
-    exit 1 
+    exit 1
   fi
 
   OS="$(uname)"
@@ -319,7 +319,7 @@ config_cook(){
     info "Skipping config: already completed"
   fi
 
-  start_app
+  # start_app
 
   info "Craig installation finished..."
   info "End time: $(date +%H:%M:%S)"
