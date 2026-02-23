@@ -1,6 +1,6 @@
 services:
   db:
-    image: postgres
+    image: postgres:15-alpine
     restart: always
     environment:
       POSTGRES_PASSWORD: craig
@@ -33,9 +33,9 @@ services:
         condition: service_started
     volumes:
       - 'craig_rec:/app/rec'
-      - './install.config:/app/install.config:ro'
 
 volumes:
   db_data:
 
   craig_rec:
+
