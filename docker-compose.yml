@@ -3,13 +3,13 @@ services:
     image: postgres:15-alpine
     restart: always
     environment:
-      POSTGRES_PASSWORD: craig
-      POSTGRES_DB: craig
-      POSTGRES_USER: craig
+      POSTGRES_PASSWORD: ${POSTGRESQL_PASSWORD}
+      POSTGRES_DB: ${DATABASE_NAME}
+      POSTGRES_USER: ${POSTGRESQL_USER}
     ports:
       - "5423:5432"
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U craig"]
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRESQL_USER:-craig} -d ${DATABASE_NAME:-craig}"]
       interval: 5s
       timeout: 5s
       retries: 5
