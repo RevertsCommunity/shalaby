@@ -4,12 +4,14 @@ function validateEnv<T extends string = string>(key: keyof NodeJS.ProcessEnv, de
   if (!value) {
     if (typeof defaultValue !== 'undefined') {
       return defaultValue;
-    } else if (!process.browser) {
+    } else if (!process.browser && process.env.SKIP_ENV_VALIDATION !== '1') {
       throw new Error(`${key} is not defined in environment variables`);
+    } else if (process.env.SKIP_ENV_VALIDATION === '1') {
+      return '' as T;
     }
   }
 
-  return value;
+  return value as T;
 }
 
 export const config = {

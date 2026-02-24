@@ -56,7 +56,7 @@ options:
                      Force application rebuild.
 
 Ensure that all required environment variables are passed to the container
-prior to running this script (e.g., DISCORD_BOT_TOKEN, NODE_VERSION, DATABASE_NAME).
+prior to running the node applications (e.g., DISCORD_BOT_TOKEN, DATABASE_NAME).
 
 Various steps are required to run local instances of Craig.
 The steps are summarized below:
@@ -205,15 +205,6 @@ config_react(){
   cp "$craig_dir/apps/bot/config/_default.js" "$craig_dir/apps/bot/config/default.js"
   cp "$craig_dir/apps/tasks/config/_default.js" "$craig_dir/apps/tasks/config/default.js"
 
-  # Extract protocol and domain from API_HOMEPAGE
-  DOWNLOAD_PROTOCOL=$(echo "$API_HOMEPAGE" | awk -F '://' '{print $1}')
-  DOWNLOAD_DOMAIN=$(echo "$API_HOMEPAGE" | awk -F '://' '{print $2}')
-
-  # Perform in-place replacement in the config file using injected env vars
-  sed -z -E -i'' "s/(dexare:.*token:\s*)('')(.*applicationID:\s*)('')(.*downloadProtocol:\s*)('https')(.*downloadDomain:\s*)('localhost:5029')/\
-  \1'${DISCORD_BOT_TOKEN}'\3'${DISCORD_APP_ID}'\5'${DOWNLOAD_PROTOCOL}'\7'${DOWNLOAD_DOMAIN//\//\\/}'/" \
-  "$craig_dir/apps/bot/config/default.js"
-
   sed -z -E -i "s/(tasks:.*ignore:\s*)(\[\s*\])/\
   \1[\"refreshPatrons\"]/"\
   "$craig_dir/apps/tasks/config/default.js"
@@ -225,7 +216,7 @@ config_yarn(){
   yarn install
   yarn prisma:generate
   # yarn prisma:deploy
-  yarn run build
+  SKIP_ENV_VALIDATION=1 yarn run build
   # yarn run sync
 }
 

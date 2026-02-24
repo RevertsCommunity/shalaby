@@ -38,9 +38,9 @@ module.exports = {
 
   dexare: {
     // Bot token
-    token: '',
+    token: process.env.DISCORD_BOT_TOKEN || '',
     // Application ID
-    applicationID: '',
+    applicationID: process.env.DISCORD_APP_ID || '',
 
     /** @type {Eris.ClientOptions} */
     erisOptions: {
@@ -70,11 +70,11 @@ module.exports = {
       // The craig emoji ID
       emoji: '297187944295301122',
       // The protocol to get downloads from
-      downloadProtocol: 'https',
+      downloadProtocol: (process.env.API_HOMEPAGE || 'http://localhost:5029').split('://')[0],
       // The domain to get downloads from
-      downloadDomain: 'localhost:5029',
+      downloadDomain: (process.env.API_HOMEPAGE || 'http://localhost:5029').split('://')[1],
       // The homepage of the bot
-      homepage: 'https://craig.chat/',
+      homepage: process.env.API_HOMEPAGE || 'https://craig.chat/',
       // The dashboard URL
       dashboardURL: 'https://my.craig.chat',
       // Record disk size limit, in bytes
