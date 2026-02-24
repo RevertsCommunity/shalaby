@@ -40,9 +40,6 @@ services:
       - REDIS_START_TIMEOUT_S=${REDIS_START_TIMEOUT_S:-30}
       - POSTGRESQL_START_TIMEOUT_S=${POSTGRESQL_START_TIMEOUT_S:-30}
       - REDIS_HOST=${REDIS_HOST:-redis}
-    ports:
-      - "7777:3000"
-      - "5029:5029"
     depends_on:
       craigdb:
         condition: service_healthy
