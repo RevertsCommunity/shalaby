@@ -40,7 +40,7 @@ module.exports = {
   },
 
   recording: {
-    fallbackExpiration: 24 * 60 * 60 * 1000,
+    fallbackExpiration: 87600 * 60 * 60 * 1000,
     path: '../../rec',
     skipIds: []
   },
