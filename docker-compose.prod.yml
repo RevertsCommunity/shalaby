@@ -25,6 +25,7 @@ services:
   craig:
     # Pulls the pre-built image from GHCR instead of building from the local Dockerfile
     image: ghcr.io/revertscommunity/shalaby:latest
+    pull_policy: always
     restart: always
     environment:
       - NODE_VERSION=${NODE_VERSION:-20.11.0}
