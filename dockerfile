@@ -37,6 +37,12 @@ ARG NODE_VERSION=20.11.0
 # Convert them into environment variables so the install script can see them
 ENV NODE_VERSION=$NODE_VERSION
 
+# Make NVM-installed Node/Yarn/PM2 available at runtime
+# NVM installs binaries here during `install.sh`, but `source ~/.nvm/nvm.sh`
+# doesn't work in Docker CMD context, so we set PATH explicitly.
+ENV NVM_DIR=/root/.nvm
+ENV PATH=/root/.nvm/versions/node/v${NODE_VERSION}/bin:$PATH
+
 # Ensure the scripts have execution permissions
 RUN chmod +x ./install.sh
 RUN chmod +x ./start.sh
