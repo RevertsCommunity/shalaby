@@ -45,7 +45,7 @@ RUN chmod +x ./start.sh
 RUN ./install.sh
 
 # Expose app port
-EXPOSE 7777
+EXPOSE 3000
 # Expose API port
 EXPOSE 5029
 

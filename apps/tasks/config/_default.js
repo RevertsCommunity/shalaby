@@ -8,29 +8,29 @@ module.exports = {
 
   // For drive upload in Google Drive
   drive: {
-    clientId: '',
-    clientSecret: ''
+    clientId: process.env.GOOGLE_CLIENT_ID || '',
+    clientSecret: process.env.GOOGLE_CLIENT_SECRET || ''
   },
 
   // For drive upload in Microsoft OneDrive
   microsoft: {
-    clientId: '',
-    clientSecret: '',
-    redirect: ''
+    clientId: process.env.MICROSOFT_CLIENT_ID || '',
+    clientSecret: process.env.MICROSOFT_CLIENT_SECRET || '',
+    redirect: process.env.MICROSOFT_REDIRECT || ''
   },
 
   // For drive upload in Dropbox
   dropbox: {
-    clientId: '',
-    clientSecret: '',
+    clientId: process.env.DROPBOX_CLIENT_ID || '',
+    clientSecret: process.env.DROPBOX_CLIENT_SECRET || '',
     folderName: 'CraigChat'
   },
 
   // for refresh patrons job
   patreon: {
-    campaignId: 0,
-    accessToken: '',
-    tiers: {},
+    campaignId: process.env.PATREON_CAMPAIGN_ID ? parseInt(process.env.PATREON_CAMPAIGN_ID, 10) : 0,
+    accessToken: process.env.PATREON_ACCESS_TOKEN || '',
+    tiers: process.env.PATREON_TIER_MAP ? JSON.parse(process.env.PATREON_TIER_MAP) : {},
     skipUsers: []
   },
 
