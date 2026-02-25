@@ -11,13 +11,11 @@ import GoogleButton from '../components/googleButton';
 import Link from '../components/link';
 import MicrosoftButton from '../components/microsoftButton';
 import { Modal } from '../components/modal';
-import Row from '../components/row';
 import Section from '../components/section';
 import SelectableRow from '../components/selectableRow';
 import DropboxLogo from '../components/svg/dropbox';
 import GoogleDriveLogo from '../components/svg/googleDrive';
 import OneDriveLogo from '../components/svg/oneDrive';
-import PatreonLogo from '../components/svg/patreon';
 import Toggle from '../components/toggle';
 import prisma from '../lib/prisma';
 import { getAvatarUrl, parseUser } from '../utils';
@@ -66,20 +64,17 @@ const formats: DropdownItem[] = [
   {
     title: 'FLAC Single-Track Mix',
     suffix: '($4 Tier)',
-    value: 'flac-mix',
-    tierRequired: 20
+    value: 'flac-mix'
   },
   {
     title: 'AAC Single-Track Mix',
     suffix: '($4 Tier)',
-    value: 'aac-mix',
-    tierRequired: 20
+    value: 'aac-mix'
   },
   {
     title: 'Ogg Vorbis Single-Track Mix',
     suffix: '($4 Tier)',
-    value: 'vorbis-mix',
-    tierRequired: 20
+    value: 'vorbis-mix'
   },
   {
     title: 'Ogg FLAC',
@@ -295,48 +290,7 @@ export default function Index(props: Props) {
                 {tierNames[props.rewardTier] ?? `#${props.rewardTier}`}
               </span>
             </div>
-            <Row title="Patreon" icon={<PatreonLogo className="w-8 h-8 rounded-full" />}>
-              {props.patronId ? (
-                <Button type="transparent" className="text-red-500" onClick={() => setPatronUnlinkOpen(true)}>
-                  Disconnect
-                </Button>
-              ) : (
-                <Button type="brand" onClick={() => (location.href = '/api/patreon/oauth')}>
-                  Connect
-                </Button>
-              )}
-            </Row>
             <Section title="Cloud Backup" big>
-              {props.rewardTier === 0 ? (
-                <div className="flex flex-col w-full">
-                  <span>To enable cloud backup to services like Google Drive, you must be a patron.</span>
-                  <Link href="https://patreon.com/CraigRec">Become a patron</Link> <br />
-                  <h2 className="font-display text-lg">Have you recently became a patron?</h2>
-                  <ul className="list-disc list-inside">
-                    <li>
-                      Benefits are checked at the start of every hour, so you should get your benefits at{' '}
-                      <time dateTime={benefitDate.toISOString()} className="bg-white/20 px-1 rounded-md">
-                        {typeof Intl !== 'undefined'
-                          ? Intl.DateTimeFormat('en-US', { hour: 'numeric', timeZoneName: 'short' }).format(benefitDate)
-                          : benefitDate.toLocaleString()}
-                      </time>{' '}
-                      (your time zone).
-                    </li>
-                    <li>
-                      If you linked your Discord through Patreon itself <b>when you started to become a patron</b>, it should give you benefits
-                      automatically.
-                    </li>
-                    <li>
-                      Make sure you are logging in with <b>the same Discord account you record with</b> and connecting to{' '}
-                      <b>the same Patreon account you are a patron with</b>.
-                    </li>
-                    <li>
-                      <i>Still</i> didn't get your benefits? Join the <Link href="https://craig.chat/support">support server</Link> for help.
-                    </li>
-                  </ul>
-                </div>
-              ) : (
-                <>
                   <Toggle
                     label={`Upload Recordings to ${serviceNames[driveService] || 'Drive'}`}
                     description="Note: After your recording has finished, the recording will not be able to be downloaded while the recording is still uploading."
@@ -404,8 +358,6 @@ export default function Index(props: Props) {
                     onSelect={setDriveFormat}
                     tier={props.rewardTier}
                   />
-                </>
-              )}
             </Section>
             <Button type="danger" onClick={() => (location.href = '/api/logout')}>
               Logout
@@ -465,7 +417,7 @@ export const getServerSideProps: GetServerSideProps<Props> = async function (ctx
   return {
     props: {
       user,
-      rewardTier: dbUser?.rewardTier || 0,
+      rewardTier: dbUser?.rewardTier === 0 ? 100 : dbUser?.rewardTier || 100,
       patronId: dbUser?.patronId || null,
       patron,
       drive: {
