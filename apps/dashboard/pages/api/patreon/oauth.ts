@@ -10,7 +10,7 @@ import { determineRewardTier } from './webhook';
 const REDIRECT_URI = `${config.appUri}/api/patreon/oauth`;
 
 const OAUTH_QS = new URLSearchParams({
-  client_id: config.patreonClientId,
+  client_id: '',
   redirect_uri: REDIRECT_URI,
   response_type: 'code'
 }).toString();
@@ -28,8 +28,8 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   if (!code || typeof code !== 'string') return res.redirect(OAUTH_URI);
 
   const body = new URLSearchParams({
-    client_id: config.patreonClientId,
-    client_secret: config.patreonClientSecret,
+    client_id: '',
+    client_secret: '',
     grant_type: 'authorization_code',
     redirect_uri: REDIRECT_URI,
     code

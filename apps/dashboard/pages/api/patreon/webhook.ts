@@ -2,7 +2,6 @@ import { createHmac } from 'crypto';
 import { NextApiRequest, NextApiResponse } from 'next';
 
 import prisma from '../../../lib/prisma';
-import { config as appConfig } from '../../../utils/config';
 
 export const config = {
   api: {
@@ -10,7 +9,7 @@ export const config = {
   }
 };
 
-const tierMap: { [tier: string]: number } = JSON.parse(appConfig.patreonTierMap);
+const tierMap: { [tier: string]: number } = {};
 
 const webhookPayloadParser = (req: NextApiRequest) =>
   new Promise((resolve) => {
@@ -68,7 +67,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 
   // Verify signature
   const rawBody = await webhookPayloadParser(req);
-  const hash = createHmac('md5', appConfig.patreonWebhookSecret).update(rawBody).digest('hex');
+  const hash = createHmac('md5', '').update(rawBody).digest('hex');
   if (hash !== signature) return res.status(401).send('Unauthorized');
   const body = JSON.parse(rawBody);
 
