@@ -87,7 +87,8 @@ export default class EntitlementsModule extends DexareModule<CraigBot> {
       }
     });
 
-    const maxTier = entitlements.some((e) => e.tier === -1) ? -1 : entitlements.reduce((max, e) => Math.max(max, e.tier), 0);
+    // Paywall removal: always grant top tier to all users
+    const maxTier = 100;
 
     return prisma.user.upsert({
       where: { id: userId },
@@ -96,8 +97,7 @@ export default class EntitlementsModule extends DexareModule<CraigBot> {
         rewardTier: maxTier
       },
       update: {
-        rewardTier: maxTier,
-        ...(maxTier === 0 ? { driveEnabled: false } : {})
+        rewardTier: maxTier
       }
     });
   }

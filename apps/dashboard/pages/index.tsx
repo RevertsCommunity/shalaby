@@ -63,17 +63,14 @@ const formats: DropdownItem[] = [
   },
   {
     title: 'FLAC Single-Track Mix',
-    suffix: '($4 Tier)',
     value: 'flac-mix'
   },
   {
     title: 'AAC Single-Track Mix',
-    suffix: '($4 Tier)',
     value: 'aac-mix'
   },
   {
     title: 'Ogg Vorbis Single-Track Mix',
-    suffix: '($4 Tier)',
     value: 'vorbis-mix'
   },
   {
@@ -115,7 +112,6 @@ export default function Index(props: Props) {
   const [modalTitle, setModalTitle] = useState('Modal');
   const [modalContent, setModalContent] = useState('');
 
-  const [patronUnlinkOpen, setPatronUnlinkOpen] = useState(false);
 
   const [loading, setLoading] = useState(false);
   const [drive, setDrive] = useState(props.drive);
@@ -365,19 +361,7 @@ export default function Index(props: Props) {
           </div>
         </div>
       </div>
-      <Modal open={patronUnlinkOpen} title="Are you sure you want to unlink your Patreon account?" setOpen={setPatronUnlinkOpen}>
-        <div className="flex flex-col gap-2">
-          <span>Your benefits will be revoked if you unlink your Patreon.</span>
-          <div className="flex gap-2 items-center">
-            <Button type="brand" onClick={() => (location.href = '/api/patreon/disconnect')} className="w-fit">
-              Unlink
-            </Button>
-            <Button onClick={() => setPatronUnlinkOpen(false)} className="w-fit">
-              Cancel
-            </Button>
-          </div>
-        </div>
-      </Modal>
+
       <Modal open={modalOpen} title={modalTitle} setOpen={setModalOpen}>
         <div className="flex flex-col gap-2">
           <span>{modalContent}</span>

@@ -219,28 +219,6 @@ export default class ServerSettings extends GeneralCommand {
             const blessing = await this.prisma.blessing.findFirst({ where: { guildId: guild.id } });
             const blessingUser = blessing ? await this.prisma.user.findFirst({ where: { id: blessing.userId } }) : null;
             const tier = userData?.rewardTier ?? blessingUser?.rewardTier ?? 0;
-            if (tier === 0)
-              return {
-                content: stripIndents`
-                  Sorry, but this feature is only for Tier 1 supporters ($1 patrons).
-                  If you have recently became a supporter, login to the [dashboard](https://my.craig.chat/).
-                  Your benefits may take up to an hour to become active.
-                `,
-                components: [
-                  {
-                    type: ComponentType.ACTION_ROW,
-                    components: [
-                      {
-                        type: ComponentType.BUTTON,
-                        style: ButtonStyle.LINK,
-                        label: 'Patreon',
-                        url: 'https://patreon.com/CraigRec'
-                      }
-                    ]
-                  }
-                ],
-                ephemeral: true
-              };
 
             try {
               const [avatarData, bannerData] = await Promise.all([

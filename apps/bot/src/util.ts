@@ -80,10 +80,7 @@ export interface ParsedRewards {
 }
 
 export function parseRewards(config: CraigBotConfig, tier = 0, guildTier = 0): ParsedRewards {
-  const userRewards = config.craig.rewardTiers[tier] || config.craig.rewardTiers[0];
-  const guildRewards = config.craig.rewardTiers[guildTier] || config.craig.rewardTiers[0];
-  if (tier === -1 || (tier >= guildTier && guildTier !== -1)) return { tier, rewards: userRewards };
-  return { tier: guildTier, rewards: guildRewards };
+  return { tier: 100, rewards: config.craig.rewardTiers[100] };
 }
 
 export function cutoffText(text: string, limit = 2000) {
@@ -274,11 +271,6 @@ export async function blessServer(userID: string, guildID: string, emojis: Slash
       ]
     };
 
-  if (userTier === 0)
-    return {
-      content: "You don't have any perks to bless this server with.",
-      ephemeral: true
-    };
 
   if (guildTier === -1 || (guildTier >= userTier && userTier !== -1))
     return {

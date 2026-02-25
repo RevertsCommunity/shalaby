@@ -14,7 +14,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 
   const dbUser = await prisma.user.findUnique({ where: { id: user.id } });
   if (!dbUser) return res.status(404).send({ error: 'User not found' });
-  if (dbUser.rewardTier === 0) return res.status(400).send({ error: 'User is not a patron' });
+
 
   const { format, container, enabled, service } = req.body;
   if (!formats.includes(format)) return res.status(400).send({ error: 'Invalid format' });
@@ -23,8 +23,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   if (format !== 'flac' && container === 'aupzip') return res.status(400).send({ error: 'Invalid combination' });
 
   if (container === 'mix' && !['flac', 'vorbis', 'aac'].includes(format)) return res.status(400).send({ error: 'Invalid combination' });
-  if (container === 'mix' && !(dbUser.rewardTier >= 20 || dbUser.rewardTier === -1))
-    return res.status(400).send({ error: 'User is not a Better Supporter ($4 tier)' });
+
 
   if (typeof enabled !== 'boolean') return res.status(400).send({ error: 'Invalid enabled state' });
 

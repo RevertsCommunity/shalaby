@@ -1,7 +1,7 @@
 import axios, { type AxiosError } from 'axios';
 import { ChildProcessWithoutNullStreams, spawn } from 'child_process';
 import config from 'config';
-import { Dropbox, DropboxAuth, DropboxResponse, Error as DropboxError, files } from 'dropbox';
+import { Dropbox, DropboxAuth, Error as DropboxError, DropboxResponse, files } from 'dropbox';
 import { drive_v3, google } from 'googleapis';
 import type { ClientRequest } from 'http';
 import { createReadStream } from 'node:fs';
@@ -178,10 +178,9 @@ export async function driveUpload({
 
   const user = await prisma.user.findFirst({ where: { id: userId } });
   if (!user) return { error: 'user_not_found', notify: false };
-  if (user.rewardTier === 0) return { error: 'user_not_allowed', notify: false };
+
   if (!user.driveEnabled) return { error: 'not_enabled', notify: false };
-  if (user.rewardTier !== -1 && user.rewardTier < 20 && user.driveContainer === 'mix')
-    return { error: 'mix_unavailable_with_current_tier', notify: false };
+
 
   const format = user.driveFormat || 'flac';
   const container = user.driveContainer || 'zip';

@@ -158,13 +158,13 @@ export default class RefreshPatrons extends TaskJob {
   }
 
   resolveUserEntitlement(entitlements: { tier: number }[], userId: string) {
-    const maxTier = entitlements.some((e) => e.tier === -1) ? -1 : entitlements.reduce((max, e) => Math.max(max, e.tier), 0);
+    // Paywall removal: always grant top tier to all users
+    const maxTier = 100;
 
     return prisma.user.update({
       where: { id: userId },
       data: {
-        rewardTier: maxTier,
-        ...(maxTier === 0 ? { driveEnabled: false } : {})
+        rewardTier: maxTier
       }
     });
   }
