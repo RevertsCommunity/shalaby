@@ -2,19 +2,19 @@ import showIcon from '@iconify-icons/bi/eye-fill';
 import hideIcon from '@iconify-icons/bi/eye-slash-fill';
 import closeIcon from '@iconify-icons/ic/close';
 import { Icon } from '@iconify/react';
-import { Component } from 'preact';
+import { Component, h } from 'preact';
 import { Translation } from 'react-i18next';
 
 import {
-    CookAvatarsPayload,
-    cookDownload,
-    getRecording,
-    getRecordingDuration,
-    getRecordingUsers,
-    isReady,
-    ReadyState,
-    RecordingInfo,
-    RecordingUser
+  CookAvatarsPayload,
+  cookDownload,
+  getRecording,
+  getRecordingDuration,
+  getRecordingUsers,
+  isReady,
+  ReadyState,
+  RecordingInfo,
+  RecordingUser
 } from '../api';
 import i18n, { languages } from '../i18n';
 import { SectionButton } from '../sections';
