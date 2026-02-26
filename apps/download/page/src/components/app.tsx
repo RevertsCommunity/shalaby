@@ -1,20 +1,20 @@
-import { Icon } from '@iconify/react';
 import showIcon from '@iconify-icons/bi/eye-fill';
 import hideIcon from '@iconify-icons/bi/eye-slash-fill';
 import closeIcon from '@iconify-icons/ic/close';
-import { Component, h } from 'preact';
+import { Icon } from '@iconify/react';
+import { Component } from 'preact';
 import { Translation } from 'react-i18next';
 
 import {
-  CookAvatarsPayload,
-  cookDownload,
-  getRecording,
-  getRecordingDuration,
-  getRecordingUsers,
-  isReady,
-  ReadyState,
-  RecordingInfo,
-  RecordingUser
+    CookAvatarsPayload,
+    cookDownload,
+    getRecording,
+    getRecordingDuration,
+    getRecordingUsers,
+    isReady,
+    ReadyState,
+    RecordingInfo,
+    RecordingUser
 } from '../api';
 import i18n, { languages } from '../i18n';
 import { SectionButton } from '../sections';
@@ -457,9 +457,9 @@ export default class App extends Component<any, AppState> {
               <div class="flex flex-row items-center justify-center gap-4">
                 <img src="/craig.png" class="w-16 h-16 rounded-full" />
                 <div class="flex flex-col">
-                  <h1 class="sm:text-4xl text-2xl text-zinc-100 font-display">{t('craig_rec')}</h1>
-                  <a href="https://craig.chat/" class="text-zinc-400 font-medium hover:underline focus:underline outline-none">
-                    craig.chat →
+                  <h1 class="sm:text-4xl text-2xl text-zinc-100 font-display">Shalaby Recording</h1>
+                  <a href="https://downloads.reverts.io/" class="text-zinc-400 font-medium hover:underline focus:underline outline-none">
+                    downloads.reverts.io →
                   </a>
                 </div>
               </div>

@@ -2,7 +2,6 @@ import { GetServerSideProps } from 'next';
 import Head from 'next/head';
 
 import Button from '../components/button';
-import Link from '../components/link';
 import LinkButton from '../components/linkButton';
 import { parseUser } from '../utils';
 
@@ -10,7 +9,7 @@ export default function Login() {
   return (
     <>
       <Head>
-        <title>Craig Dashboard</title>
+        <title>Shalaby Dashboard</title>
         <meta name="viewport" content="width=device-width,initial-scale=1" />
         <meta httpEquiv="Content-Type" content="text/html; charset=UTF-8" />
         <meta httpEquiv="Content-Language" content="en" />
@@ -18,9 +17,9 @@ export default function Login() {
         <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
         <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
         <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#2dd4bf" />
-        <meta name="og:site_name" content="Craig" />
-        <meta name="og:title" content="Craig Dashboard" />
-        <meta name="og:description" content="The dashboard for Craig, a multi-track recording bot for Discord." />
+        <meta name="og:site_name" content="Shalaby" />
+        <meta name="og:title" content="Shalaby Dashboard" />
+        <meta name="og:description" content="The dashboard for Shalaby, a multi-track recording bot for Discord." />
         <meta name="og:locale" content="en_US" />
         <meta name="og:image" content="/android-chrome-512x512.png" />
         <meta name="msapplication-TileColor" content="#2dd4bf" />
@@ -29,13 +28,12 @@ export default function Login() {
       <div className="min-h-screen bg-gradient-to-t from-neutral-800 to-zinc-900 text-white font-body flex items-center justify-center flex-col py-12 sm:px-12">
         <div className="bg-zinc-700 sm:rounded flex justify-center items-center sm:shadow-md w-full flex-col sm:w-4/5 sm:max-w-4xl">
           <h1 className="text-3xl flex justify-center p-3 gap-4 items-center relative bg-black bg-opacity-20 w-full font-body">
-            <img crossOrigin="anonymous" src="https://craig.chat/craig.svg" className="w-12 h-12 rounded-full" />
-            <span>Craig Dashboard</span>
+            <span>Shalaby Dashboard</span>
           </h1>
           <div className="flex flex-col justify-center items-center p-6 gap-4 w-full">
             <div className="flex gap-2 flex-col w-full justify-center items-center">
               <span>
-                This is the dashboard for <Link href="https://craig.chat">Craig</Link>, a multi-track voice recording bot for Discord.
+                This is the dashboard for Shalaby, a multi-track voice recording bot for Discord.
               </span>
               <span>It's a simple dashboard, allowing you to link your Patreon for extra perks, and manage your cloud backup.</span>
               <br />
@@ -45,8 +43,7 @@ export default function Login() {
               Login
             </Button>
             <div className="flex gap-4 flex-wrap justify-center">
-              <LinkButton name="Home" href="https://craig.chat/" />
-              <LinkButton name="Privacy Policy" href="https://craig.chat/home/privacy.php" />
+              <LinkButton name="Home" href="https://shalaby.reverts.io/" />
             </div>
           </div>
         </div>

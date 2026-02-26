@@ -144,7 +144,7 @@ module.exports = {
     status: {
       type: 4, // [custom status]
       name: 'craig',
-      state: 'Recording VCs • craig.chat'
+      state: 'Recording Events • reverts.io'
     },
 
     logger: {

@@ -38,7 +38,7 @@ export default class Info extends GeneralCommand {
 
     return {
       content: stripIndents`
-        ${this.emojis.getMarkdown('craig')} **Craig** is a multi-track voice channel recorder.
+        ${this.emojis.getMarkdown('craig')} **Shalaby** is a multi-track voice channel recorder.
         I am in **${guildCount.toLocaleString()}** guilds and currently recording **${recordings.toLocaleString()}** conversations.
 
         This server is on shard ${this.client.shard?.id ?? process.env.SHARD_ID} with ${
@@ -53,7 +53,7 @@ export default class Info extends GeneralCommand {
             {
               type: ComponentType.BUTTON,
               style: ButtonStyle.LINK,
-              label: 'craig.chat',
+              label: 'shalaby.reverts.io',
               url: this.client.config.craig.homepage
             },
             {

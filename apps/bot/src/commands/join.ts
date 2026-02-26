@@ -270,8 +270,8 @@ export default class Join extends GeneralCommand {
     if (parsedRewards.rewards.recordHours <= 0)
       return {
         content: stripIndentsAndLines`
-          Sorry, but this bot is only for patrons. Please use Craig.
-          If you have recently became a patron, login to the [dashboard](https://my.craig.chat/).
+          Sorry, but this bot is only for patrons. Please use Shalaby.
+          If you have recently became a patron, login to the [dashboard](https://shalaby.reverts.io/).
           Your benefits may take up to an hour to become active.
         `,
         components: [
@@ -281,8 +281,8 @@ export default class Join extends GeneralCommand {
               {
                 type: ComponentType.BUTTON,
                 style: ButtonStyle.LINK,
-                label: 'craig.chat',
-                url: 'https://craig.chat/'
+                label: 'shalaby.reverts.io',
+                url: 'https://shalaby.reverts.io/'
               },
               {
                 type: ComponentType.BUTTON,

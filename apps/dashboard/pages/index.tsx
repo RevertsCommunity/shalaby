@@ -150,7 +150,7 @@ export default function Index(props: Props) {
 
       if (error === 'access_denied') content = 'You denied access to your account.';
       else if (error === 'invalid_scope')
-        content = 'You have provided partial permissions to Craig. Cloud backup will not work unless all permissions are checked.';
+        content = 'You have provided partial permissions to Shalaby. Cloud backup will not work unless all permissions are checked.';
       else content = error;
     }
 
@@ -248,7 +248,7 @@ export default function Index(props: Props) {
   return (
     <>
       <Head>
-        <title>Craig Dashboard</title>
+        <title>Shalaby Dashboard</title>
         <meta name="viewport" content="width=device-width,initial-scale=1" />
         <meta httpEquiv="Content-Type" content="text/html; charset=UTF-8" />
         <meta httpEquiv="Content-Language" content="en" />
@@ -256,8 +256,8 @@ export default function Index(props: Props) {
         <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
         <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
         <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#2dd4bf" />
-        <meta name="og:site_name" content="Craig" />
-        <meta name="og:title" content="Craig Dashboard" />
+        <meta name="og:site_name" content="Shalaby" />
+        <meta name="og:title" content="Shalaby Dashboard" />
         <meta name="og:description" content="The multi-track recording bot for Discord." />
         <meta name="og:locale" content="en_US" />
         <meta name="og:image" content="/icon-512x512.png" />
