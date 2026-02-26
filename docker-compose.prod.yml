@@ -9,7 +9,7 @@ services:
     ports:
       - "5423:5432"
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U ${POSTGRESQL_USER:-craig} -d ${DATABASE_NAME:-craig}"]
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRESQL_USER:-shalaby} -d ${DATABASE_NAME:-shalaby}"]
       interval: 5s
       timeout: 5s
       retries: 5
@@ -22,7 +22,7 @@ services:
     ports:
       - "6379:6379"
 
-  craig:
+  shalaby:
     # Pulls the pre-built image from GHCR instead of building from the local Dockerfile
     image: ghcr.io/revertscommunity/shalaby:latest
     pull_policy: always
@@ -56,14 +56,14 @@ services:
       - APP_URI=${APP_URI}
       - JWT_SECRET=${JWT_SECRET}
     depends_on:
-      craigdb:
+      shalabydb:
         condition: service_healthy
         restart: true
       redis:
         condition: service_started
     volumes:
-      - 'craig_rec:/app/rec'
+      - 'shalaby_rec:/app/rec'
 
 volumes:
   db_data:
-  craig_rec:
+  shalaby_rec:
