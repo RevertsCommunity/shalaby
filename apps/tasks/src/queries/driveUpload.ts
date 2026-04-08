@@ -14,6 +14,9 @@ import { prisma } from '../prisma';
 import { clearReadyState, setReadyState } from '../redis';
 
 const CHUNKS_PER_DRIVE_UPLOAD = 20;
+const GOOGLE_DRIVE_FOLDER_NAME = 'Event Recordings';
+const MAX_FILENAME_SPEAKERS = 3;
+const MAX_SPEAKER_SEGMENT_LENGTH = 24;
 
 const driveConfig = config.get<{
   clientId: string;
@@ -81,17 +84,74 @@ async function cook(id: string, format = 'flac', container = 'zip', dynaudnorm =
   }
 }
 
-async function findCraigDirectoryInGoogleDrive(drive: drive_v3.Drive) {
+type RecordingUser = {
+  id: string;
+  name?: string;
+  username: string;
+};
+
+function padDatePart(value: number) {
+  return value.toString().padStart(2, '0');
+}
+
+function sanitizeFileNameSegment(value: string) {
+  const sanitized = value
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '_')
+    .replace(/^_+|_+$/g, '')
+    .replace(/_+/g, '_');
+
+  return sanitized || 'speaker';
+}
+
+async function getRecordingUsers(recordingId: string): Promise<RecordingUser[]> {
+  try {
+    const userText = await fs.readFile(path.join(recPath, `${recordingId}.ogg.users`), 'utf8');
+    const users: { [index: string]: RecordingUser } = JSON.parse(`{${userText}}`);
+    return Object.values(users).filter((user) => Object.keys(user).length !== 0);
+  } catch (err) {
+    return [];
+  }
+}
+
+function buildSpeakerSlug(info: any, users: RecordingUser[]) {
+  const speakerNames = users
+    .map((user) => sanitizeFileNameSegment((user.name || user.username || '').slice(0, MAX_SPEAKER_SEGMENT_LENGTH)))
+    .filter((name, index, names) => !!name && names.indexOf(name) === index);
+
+  if (speakerNames.length === 0) {
+    return sanitizeFileNameSegment(info.requester || 'recording');
+  }
+
+  const cappedNames = speakerNames.slice(0, MAX_FILENAME_SPEAKERS);
+  const remaining = speakerNames.length - cappedNames.length;
+  return remaining > 0 ? `${cappedNames.join('_')}_plus${remaining}` : cappedNames.join('_');
+}
+
+function buildDriveFileName(recordingId: string, info: any, users: RecordingUser[]) {
+  const startDate = new Date(info.startTime);
+  const dateStamp = [
+    startDate.getFullYear(),
+    padDatePart(startDate.getMonth() + 1),
+    padDatePart(startDate.getDate())
+  ].join('-');
+  const timeStamp = [padDatePart(startDate.getHours()), padDatePart(startDate.getMinutes()), padDatePart(startDate.getSeconds())].join('-');
+  const speakerSlug = buildSpeakerSlug(info, users);
+
+  return `${speakerSlug}_${recordingId}_${dateStamp}_${timeStamp}`;
+}
+
+async function findGoogleDriveUploadDirectory(drive: drive_v3.Drive) {
   try {
     const list = await drive.files.list({
-      q: "name = 'Craig' and mimeType = 'application/vnd.google-apps.folder'"
+      q: `name = '${GOOGLE_DRIVE_FOLDER_NAME}' and mimeType = 'application/vnd.google-apps.folder'`
     });
 
     if (list.data.files && list.data.files.length > 0) return list.data.files[0].id;
 
     const folder = await drive.files.create({
       requestBody: {
-        name: 'Craig',
+        name: GOOGLE_DRIVE_FOLDER_NAME,
         mimeType: 'application/vnd.google-apps.folder',
         folderColorRgb: '#00aaaa'
       }
@@ -171,10 +231,8 @@ export async function driveUpload({
   const dataExists = await fileExists(path.join(recPath, `${recordingId}.ogg.data`));
   if (!dataExists) return { error: 'data_deleted', notify: false };
   const info = JSON.parse(await fs.readFile(path.join(recPath, `${recordingId}.ogg.info`), 'utf8'));
-  const startDate = new Date(info.startTime);
-  const fileName = `craig_${recordingId}_${startDate.getFullYear()}-${
-    startDate.getMonth() + 1
-  }-${startDate.getDate()}_${startDate.getHours()}-${startDate.getMinutes()}-${startDate.getSeconds()}`;
+  const users = await getRecordingUsers(recordingId);
+  const fileName = buildDriveFileName(recordingId, info, users);
 
   const user = await prisma.user.findFirst({ where: { id: userId } });
   if (!user) return { error: 'user_not_found', notify: false };
@@ -220,7 +278,7 @@ export async function driveUpload({
             });
         });
 
-        const folderId = await findCraigDirectoryInGoogleDrive(drive);
+        const folderId = await findGoogleDriveUploadDirectory(drive);
         if (!folderId) return { error: 'google_token_expired', notify: true };
         child = await cook(recordingId, format, container);
 
